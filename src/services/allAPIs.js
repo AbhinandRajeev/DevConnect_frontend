@@ -91,3 +91,13 @@ export const getUserAPI = async(id, reqHeader) =>{
 export const updateUserAPI = async(reqBody, reqHeader) =>{
     return await commonAPI('PUT',`${serverURL}/api/updateProfile`, reqBody, reqHeader)
 }
+
+// apply for job
+export const ApplyJobAPI = async(reqBody, reqHeader) =>{
+    return await commonAPI('POST', `${serverURL}/api/applyJob`, reqBody, reqHeader)
+}
+
+// get company applications
+export const CompanyApplicationsAPI = async(reqHeader) =>{
+    return await commonAPI('GET', `${serverURL}/api/companyapplications`, {}, reqHeader)
+}

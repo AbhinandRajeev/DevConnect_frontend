@@ -7,7 +7,7 @@ import { FaGithub, FaGlobe, FaMapMarkerAlt } from "react-icons/fa";
 import { FaEnvelope } from "react-icons/fa";
 import Header from '../../user/components/Header';
 import CompanyProfileEdit from '../components/CompanyProfileEdit';
-import { AddJobAPI, CompanyJobsAPI, DeleteJobsAPI } from '../../services/allAPIs';
+import { AddJobAPI, CompanyJobsAPI, DeleteJobsAPI, CompanyApplicationsAPI } from '../../services/allAPIs';
 
 
 function CompanyProfile() {
@@ -15,6 +15,7 @@ function CompanyProfile() {
   const [token, setToken] = useState('')
 
   const [jobs, setJobs] = useState([])
+  const [applications, setApplications] = useState([])
 
   const [userData, setUserData] = useState({})
 
@@ -82,6 +83,21 @@ function CompanyProfile() {
     }
   }
 
+  const getCompanyApplications = async (token) => {
+    const updatedToken = token.replace(/"/g, "")
+    const reqHeader = {
+      Authorization: `Bearer ${updatedToken}`
+    }
+    try {
+      const response = await CompanyApplicationsAPI(reqHeader)
+      console.log("Applications", response)
+      setApplications(response.data)
+    }
+    catch (err) {
+      console.log("Error Fetching Applications", err)
+    }
+  }
+
   const handleDelete = async (id) => {
     console.log("Delete id" + id)
     const updatedToken = token.replace(/"/g, "")
@@ -111,6 +127,7 @@ function CompanyProfile() {
   useEffect(() => {
     if (token) {
       getCompanyJobs(token);
+      getCompanyApplications(token);
     }
   }, [token]);
 
@@ -281,40 +298,82 @@ function CompanyProfile() {
             </TabItem>
 
             <TabItem title="View Applicants" icon={HiUserCircle}>
-              <div className="flex flex-wrap gap-x-8 gap-y-6 justify-start">
-                <div className="w-72">
-                  <Card className="flex m-0 p-4 items-center bg-gray-600">
-                    <div className="flex items-center space-x-4">
-                      <img src="/images/book1.jpg" alt="" className="rounded" width="50px" />
-                      <div>
-                        <h5 className="font-bold tracking-tight text-white">Manu</h5>
-                        <h6 className="text-white text-sm">manu@gmail.com</h6>
+              <div className="w-full space-y-6">
+                {applications?.length > 0 ? (
+                  applications.map((app) => (
+                    <Card key={app._id} className="w-full border border-gray-700 bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                      <div className="flex flex-col md:flex-row gap-6 p-2">
+                        
+                        {/* Left Side: Applicant Info */}
+                        <div className="flex-1 space-y-4">
+                          <div className="flex justify-between items-start">
+                             <div>
+                                <h3 className="text-2xl font-bold text-white mb-1 font-serif">{app.name}</h3>
+                                <div className="text-sm font-medium text-blue-400 bg-blue-900/30 px-3 py-1 rounded-full inline-block border border-blue-800/50">
+                                  Applied for: {app.jobId?.title || 'Unknown Job'}
+                                </div>
+                             </div>
+                             
+                             <div className="hidden md:flex flex-col items-end space-y-2 text-gray-300 text-sm">
+                                <span className="flex items-center gap-2"><FaEnvelope className="text-gray-400" /> {app.email}</span>
+                                <span className="flex items-center gap-2"><HiUserCircle className="text-gray-400" /> {app.phone}</span>
+                             </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-700/50 mt-4">
+                            <div className="space-y-1">
+                               <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Qualification</p>
+                               <p className="text-gray-200 font-medium">{app.qualification}</p>
+                            </div>
+                            
+                            {/* Mobile only contact info */}
+                            <div className="md:hidden space-y-2 text-gray-300 text-sm">
+                                <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Contact</p>
+                                <span className="flex items-center gap-2 mb-1"><FaEnvelope className="text-gray-400" /> {app.email}</span>
+                                <span className="flex items-center gap-2"><HiUserCircle className="text-gray-400" /> {app.phone}</span>
+                            </div>
+                          </div>
+
+                          <div className="pt-2">
+                            <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold mb-2">Cover Letter</p>
+                            <div className="bg-gray-900/50 border border-gray-700 rounded-lg p-4 text-gray-300 text-sm italic leading-relaxed relative">
+                              <span className="absolute top-2 left-2 text-gray-600 text-2xl font-serif">"</span>
+                              <p className="pl-4 relative z-10">{app.coverLetter}</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Side: Action CTA */}
+                        <div className="w-full md:w-64 flex flex-col items-center justify-center shrink-0 border-t md:border-t-0 md:border-l border-gray-700 pt-6 md:pt-0 pl-0 md:pl-6">
+                          
+                          <div className="w-full space-y-3">
+                            {app.resume ? (
+                                <a 
+                                  href={app.resume.includes('/upload/') ? app.resume.replace('/upload/', '/upload/fl_attachment/') : app.resume} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                  className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition-colors shadow-md"
+                                >
+                                  Download Resume
+                                </a>
+                            ) : (
+                                <button disabled className="w-full flex items-center justify-center gap-2 bg-gray-600 text-gray-400 font-medium py-3 px-4 rounded-lg cursor-not-allowed">
+                                  No Resume Provided
+                                </button>
+                            )}
+                          </div>
+                        </div>
+
                       </div>
-                    </div>
-                  </Card>
-                </div>
-                <div className="w-72">
-                  <Card className="flex m-0 p-4 items-center bg-gray-600">
-                    <div className="flex items-center space-x-4">
-                      <img src="/images/book1.jpg" alt="" className="rounded" width="50px" />
-                      <div>
-                        <h5 className="font-bold tracking-tight text-white">Manu</h5>
-                        <h6 className="text-white text-sm">manu@gmail.com</h6>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-                <div className="w-72">
-                  <Card className="flex m-0 p-4 items-center bg-gray-600">
-                    <div className="flex items-center space-x-4">
-                      <img src="/images/book1.jpg" alt="" className="rounded" width="50px" />
-                      <div>
-                        <h5 className="font-bold tracking-tight text-white">Manu</h5>
-                        <h6 className="text-white text-sm">manu@gmail.com</h6>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
+                    </Card>
+                  ))
+                ) : (
+                  <div className="w-full flex flex-col items-center justify-center py-16 bg-gray-800 rounded-xl border border-gray-700 shadow-sm">
+                    <HiClipboardList className="w-16 h-16 text-gray-500 mb-4" />
+                    <h3 className="text-xl font-medium text-gray-300">No applicants yet</h3>
+                    <p className="text-gray-500 mt-2">Applications for your job posts will appear here.</p>
+                  </div>
+                )}
               </div>
             </TabItem>
           </Tabs>
