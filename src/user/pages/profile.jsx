@@ -9,7 +9,7 @@ import { FaGithub, FaGlobe, FaFileAlt } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import AddProject from "../components/AddProject";
 import { Link } from 'react-router-dom';
-import { getUserAPI, ProfilePostAPI } from "../../services/allAPIs";
+import { getUserAPI, ProfilePostAPI, UserApplicationsAPI } from "../../services/allAPIs";
 import ProfileProjectCard from "../components/ProfileProjectCard";
 import { jwtDecode } from "jwt-decode";
 
@@ -19,6 +19,7 @@ function Profile() {
 
     const [token, setToken] = useState('')
     const [myPost, setMyPost] = useState([])
+    const [myApplications, setMyApplications] = useState([])
     const [userData, setUserData] = useState({
         skills: []
     })
@@ -79,6 +80,23 @@ function Profile() {
         }
     }
 
+    const getUserApplications = async (token) => {
+        const updatedToken = token.replace(/"/g, "")
+        const reqHeader = {
+            Authorization: `Bearer ${updatedToken}`
+        }
+        try {
+            const response = await UserApplicationsAPI(reqHeader)
+            console.log("User Applications:", response.data)
+            if (response.status === 200) {
+                setMyApplications(response.data)
+            }
+        }
+        catch (err) {
+            console.log("Error fetching applications", err)
+        }
+    }
+
 
 
 
@@ -96,6 +114,9 @@ function Profile() {
             if (userId) {
                 getUserData(savedToken, userId);
             }
+
+            // job applications
+            getUserApplications(savedToken);
         }
     }, []);
 
@@ -217,30 +238,64 @@ function Profile() {
 
 
                         <TabItem title="Job Applications" icon={MdDashboard}>
-                            <Card className="w-full">
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h5 className="text-xl font-bold">TechCorp</h5>
-                                        <p>Role: Frontend Developer</p>
-                                        <p>Status: Shortlisted</p>
-                                        <p>Applied On: 2025-11-01</p>
+                            {myApplications.length > 0 ? (
+                                myApplications.map((app) => (
+                                    <div key={app._id} className="bg-white rounded-2xl p-6 mb-5 border border-slate-200 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.15)] transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+                                        
+                                        {/* Status Accent Bar */}
+                                        <div className="absolute top-0 left-0 w-1.5 h-full bg-yellow-400"></div>
+                                        
+                                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 ml-4">
+                                            
+                                            {/* Company & Role Info */}
+                                            <div className="flex-1">
+                                                <div className="flex items-center gap-3 mb-1">
+                                                    <h4 className="text-xl font-extrabold text-slate-900 tracking-tight leading-none group-hover:text-[#0A66C2] transition-colors">{app.companyId?.username || "Unknown Company"}</h4>
+                                                    <span className="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200 text-xs font-bold tracking-wider uppercase">
+                                                        {app.jobId?.type || "Full-Time"}
+                                                    </span>
+                                                </div>
+                                                <h5 className="text-lg font-semibold text-slate-700 mb-3">{app.jobId?.title || "Unknown Role"}</h5>
+                                                
+                                                <div className="flex items-center gap-4 text-sm text-slate-500 font-medium">
+                                                    <div className="flex items-center gap-1.5">
+                                                        <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                                        Applied: {new Date(app.createdAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Application Status Badge */}
+                                            <div className="shrink-0 flex items-center self-start md:self-center">
+                                                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-yellow-50 border border-yellow-200 shadow-xs">
+                                                    <span className="relative flex h-2.5 w-2.5">
+                                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-yellow-400 opacity-75"></span>
+                                                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-yellow-500"></span>
+                                                    </span>
+                                                    <span className="text-sm font-bold text-yellow-700 tracking-wide uppercase">
+                                                        Pending Review
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                     </div>
+                                ))
+                            ) : (
+                                <div className="text-center py-10 bg-white rounded-xl border border-gray-100 shadow-sm">
+                                    <h3 className="text-xl font-semibold text-slate-800 mb-2">No Job Applications Yet</h3>
+                                    <p className="text-slate-500 mb-5">You haven't applied to any roles on the marketplace.</p>
+                                    <Link to="/careers">
+                                        <Button color="blue" className="mx-auto">
+                                            Explore Careers
+                                        </Button>
+                                    </Link>
                                 </div>
-                            </Card>
-                            <Card className="w-full mt-4">
-                                <div className="flex justify-between items-center">
-                                    <div>
-                                        <h5 className="text-xl font-bold">InnovateX</h5>
-                                        <p>Role: Full Stack Developer</p>
-                                        <p>Status: Pending</p>
-                                        <p>Applied On: 2025-10-25</p>
-                                    </div>
-                                </div>
-                            </Card>
+                            )}
                         </TabItem>
 
                         {/* Purchase History */}
-                        <TabItem title="Purchase History" icon={HiAdjustments}>
+                        {/* <TabItem title="Purchase History" icon={HiAdjustments}>
                             <Card className="w-full">
                                 <div className="flex justify-between items-center">
                                     <div>
@@ -263,7 +318,7 @@ function Profile() {
                                     <img src="/images/project4.png" alt="Project" width={120} />
                                 </div>
                             </Card>
-                        </TabItem>
+                        </TabItem> */}
                     </Tabs>
                 </div>
             </section>

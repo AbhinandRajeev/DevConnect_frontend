@@ -101,3 +101,8 @@ export const ApplyJobAPI = async(reqBody, reqHeader) =>{
 export const CompanyApplicationsAPI = async(reqHeader) =>{
     return await commonAPI('GET', `${serverURL}/api/companyapplications`, {}, reqHeader)
 }
+
+// get user applications
+export const UserApplicationsAPI = async(reqHeader) =>{
+    return await commonAPI('GET', `${serverURL}/api/userapplications`, {}, reqHeader)
+}

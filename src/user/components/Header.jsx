@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { HiAdjustments, HiCloudDownload, HiUserCircle } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { serverURL } from "../../services/serverURL";
 
 
 function Header({ variant = "solid" }) {
@@ -37,6 +38,16 @@ function Header({ variant = "solid" }) {
     useEffect(() => {
         setUserData(userDetails)
     }, [])
+
+    const getProfileImageUrl = (profile) => {
+        if (profile && profile.startsWith("http")) {
+            return profile;
+        }
+        if (profile) {
+            return `${serverURL}/uploads/${profile}`;
+        }
+        return "/images/profilepic.jpg"; // Default fallback
+    };
 
     return (
         <header
@@ -70,7 +81,7 @@ function Header({ variant = "solid" }) {
                             label={
                                 <Avatar
                                     alt="User settings"
-                                    img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                                    img={getProfileImageUrl(userData.profile)}
                                     rounded
                                     className="ring-2 ring-white/20 hover:ring-white/40 transition"
                                 />
