@@ -1,14 +1,6 @@
-<<<<<<< HEAD
-# DevConnect - Client (Frontend) 💻
-
-> **Looking for the Server/API codebase?**  
-> 🔗 **[Click here to view the Backend Repository](https://github.com/AbhinandRajeev/DevConnect_backend)** 
-=======
 # DevConnect 🚀
 > **Showcase. Sell. Hire.**  
 > A premium, modern marketplace and career hub tailored specifically for developers, freelancers, and tech creators to monetize their side-projects, build verified portfolios, and connect with prospective companies.
->>>>>>> fece5d0 (minor updates)
-
 ---
 
 ### 🔗 Repository Links
