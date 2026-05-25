@@ -1,8 +1,7 @@
 # DevConnect - Client (Frontend) 💻
 
 > **Looking for the Server/API codebase?**  
-> 🔗 **[Click here to view the Backend Repository](https://github.com/YOUR_GITHUB_USERNAME/YOUR_BACKEND_REPO_NAME)**  
-> *(Please replace this placeholder with your actual backend repository link)*
+> 🔗 **[Click here to view the Backend Repository](https://github.com/AbhinandRajeev/DevConnect_backend)** 
 
 ---
 
