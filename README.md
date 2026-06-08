@@ -1,4 +1,4 @@
-# DevConnect 🚀
+# DevConnect
 > **Showcase. Sell. Hire.**  
 > A premium, modern marketplace and career hub tailored specifically for developers, freelancers, and tech creators to monetize their side-projects, build verified portfolios, and connect with prospective companies.
 ---
@@ -10,7 +10,7 @@ This project is divided into two separate repositories for the frontend client a
 
 ---
 
-## 📖 Table of Contents
+## Table of Contents
 1. [Overview](#-overview)
 2. [Key Features](#-key-features)
    - [For Developers](#-for-developers)
@@ -29,34 +29,34 @@ This project is divided into two separate repositories for the frontend client a
 
 ---
 
-## 🌟 Overview
+## Overview
 **DevConnect** is a comprehensive full-stack ecosystem designed to bridge the gap between creative developer endeavors and commercial success. Rather than letting side-projects sit idle in public repositories, DevConnect empowers creators to publish their products in a curated marketplace. 
 
 Developers can sell source codes, gather engagement via likes and comments, and compile a beautiful, unified developer profile. Concurrently, companies can create institutional profiles, explore the marketplace for software solutions, list active career vacancies, and directly recruit top talent through a streamlined applicant management portal.
 
 ---
 
-## ✨ Key Features
+## Key Features
 
-### 💻 For Developers
+### For Developers
 * **Interactive Showcase**: Build a media-rich presentation of your software. Upload multiple project images, interactive walkthrough videos, and link source repositories alongside live demo links.
 * **Unified Developer Profiles**: Highlight your professional persona with direct links to GitHub, LinkedIn, and personal portfolios, combined with custom profile pictures, biography, and skill sets.
 * **Marketplace Monetization**: Sell your project licenses or complete source codes directly to other developers or organizations with secure checkouts.
 * **Engagement Engine**: Give and receive feedback on projects with direct post liking and interactive comment sections.
 * **Seamless Careers Portal**: Search through company-listed jobs and submit dynamic applications attaching structured cover letters and PDF resumes.
 
-### 🏢 For Companies
+### For Companies
 * **Corporate Profiling**: Create a distinct brand presence on the hub, featuring headquarters information, website links, descriptions, and corporate logos.
 * **Recruitment Hub**: Manage, post, and delete job opportunities specifying salaries, experience requirements, qualifications, and locations.
 * **Applicant Review System**: View submitted developer applications, read personalized cover letters, and download candidate resumes directly to identify fits.
 
-### 🔑 Shared Ecosystem Capabilities
+### Shared Ecosystem Capabilities
 * **Dual-Method Authentication**: Secure user and company accounts via custom JWT-based email/password registration or passwordless Google OAuth 2.0.
 * **Responsive Fluid Design**: Tailored visual interface equipped with animations, interactive overlays, and seamless desktop-to-mobile navigation.
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Frontend
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -84,7 +84,7 @@ Developers can sell source codes, gather engagement via likes and comments, and 
 
 ---
 
-## 🗺️ System Architecture
+## System Architecture
 
 ```mermaid
 graph TD
@@ -137,7 +137,7 @@ graph TD
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 Here is a simplified outline of the core database collections managed in MongoDB Atlas:
 
@@ -219,7 +219,7 @@ erDiagram
 
 ---
 
-## ⚙️ Getting Started
+## Getting Started
 
 ### Prerequisites
 * [Node.js](https://nodejs.org/en/) installed locally (v18+ recommended)
@@ -289,9 +289,9 @@ erDiagram
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
-### 🔐 Authentication & User Profiles
+### Authentication & User Profiles
 | Method | Endpoint | Description | Auth Requirement |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/register` | Register a new Developer / Company user | None |
@@ -300,7 +300,7 @@ erDiagram
 | `GET` | `/api/user/:id` | Retrieve developer profile data | `JWT Middleware` |
 | `PUT` | `/api/updateProfile` | Modify profile picture, details, and social links | `JWT Middleware + Multer` |
 
-### 🛒 Projects & Marketplace
+### Projects & Marketplace
 | Method | Endpoint | Description | Auth Requirement |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/addPost` | Upload a new marketplace project with images/videos | `JWT Middleware + Multi-Multer` |
@@ -311,7 +311,7 @@ erDiagram
 | `POST` | `/api/comment/:id` | Submit a comment to a project | `JWT Middleware` |
 | `POST` | `/api/makePayment` | Handle project purchases and initiate Stripe Checkout sessions | `JWT Middleware` |
 
-### 💼 Jobs & Applications
+### Jobs & Applications
 | Method | Endpoint | Description | Auth Requirement |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/api/addJob` | Post a new job opening (Company only) | `JWT Middleware` |
@@ -324,7 +324,7 @@ erDiagram
 
 ---
 
-## ⚙️ Workflows
+## Workflows
 
 ### 1. Stripe Checkout Integration
 ```mermaid
@@ -370,11 +370,5 @@ All project snapshots, demonstration videos, profile images, and PDF resumes are
             ▼
 [ Express Saves String URL in MongoDB ]
 ```
-
----
-
-## 👥 Authors & Contributors
-* Developed as a comprehensive React and MERN integration project.
-* Crafted with a clean, high-performance UI using premium layout components and custom animation elements.
 
 ---
